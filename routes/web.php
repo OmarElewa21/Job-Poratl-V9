@@ -58,6 +58,13 @@ use App\Http\Controllers\Web;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\QuizController;
+use App\Http\Controllers\QuizQuestionController;
+use App\Http\Controllers\QuizTakeController;
+use App\Http\Controllers\QuizTakeAnswersController;
+use App\Http\Controllers\QuizCategoryController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -90,6 +97,34 @@ Route::get('/', [Web\WebController::class, 'index'])->name('front');
 Route::post('news-letter', [Web\WebController::class, 'newsLetter'])->name('news-letter.create');
 
 Route::group(['middleware' => ['auth', 'role:Admin', 'xss', 'verified.user'], 'prefix' => 'admin'], function () {
+    
+    // Handling Quizes Section
+    Route::group([], function (){
+        Route::resource('quizzes/category', QuizCategoryController::class);
+        Route::resource('quizzes/question', QuizQuestionController::class);
+        Route::post('quizzes/category/loading/uploadexcel', [QuizCategoryController::class, 'uploadExcel']);
+        Route::post('quizzes/quizzes/loading/uploadexcel', [QuizController::class, 'uploadExcel']);
+        Route::get('quizzes/category/loading/loadExcel', [QuizCategoryController::class, 'loadExcel']);
+
+        Route::resource('quizzes/quiz', QuizController::class);
+        Route::get('quizzes/quiz/{quiz_id}/grades', [QuizController::class, 'quiz_takers'])->name('loadQuizGrades');
+        Route::get('quizzes/quiz/{quiz_id}/grade', [QuizController::class, 'showGrades']);
+        Route::get('quizzes/quiz/{quiz_id}/detailedGrades', [QuizController::class, 'showDetailedGrades']);
+        Route::get('quizzes/quiz/{user_id}/user/{is_guest}', [QuizController::class, 'show_user']);
+        Route::get('quizzes/quiz/{quiz_id}/skills/show', [QuizController::class ,'showSkills']);
+
+        Route::get('quizzes/quiz/{quiz_id}/add_range/{category_id}', [QuizController::class, 'add_range']);
+        Route::post('quizzes/quiz/{quiz_id}/add_range/{category_id}', [QuizController::class, 'store_range']);
+        
+        Route::get('quizzes/quiz/{quiz_id}/add_signs', [QuizController::class ,'add_signs']);
+        Route::post('quizzes/quiz/{quiz_id}/store_signs', [QuizController::class ,'store_signs']);
+        
+        Route::get('quizzes/quiz/{quiz_id}/skills', [QuizController::class ,'skills']);
+        Route::post('quizzes/quiz/{quiz_id}/store_skills', [QuizController::class ,'store_skills']);
+    });
+    
+    Route::get('/users/candidates/{quiz_id}', [QuizController::class, 'assign_quiz_render']);
+    Route::post('/users/candidates/{quiz_id}', [QuizController::class, 'assign_quiz_store']);
 
     // logs view route
     Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
@@ -138,6 +173,9 @@ Route::group(['middleware' => ['auth', 'role:Admin', 'xss', 'verified.user'], 'p
     Route::get('skills/{skill}/edit', [SkillController::class, 'edit'])->name('skills.edit');
     Route::put('skills/{skill}', [SkillController::class, 'update'])->name('skills.update');
     Route::delete('skills/{skill}', [SkillController::class, 'destroy'])->name('skills.destroy');
+    Route::get('skills/{skill_id}/classes', [SkillController::class, 'showClasses']);
+    Route::post('skills/{skill_id}/classes', [SkillController::class, 'storeClasses']);
+    Route::post('skills/classes/uploadExcel', [SkillController::class, 'uploadExcel']);
 
     // Marital Status
     Route::get('marital-status', [MaritalStatusController::class, 'index'])->name('maritalStatus.index');
@@ -694,6 +732,12 @@ Route::group([
         Route::get('job-alert', [Candidates\CandidateController::class, 'editJobAlert'])->name('candidate.job.alert');
         Route::post('job-alert', [Candidates\CandidateController::class, 'updateJobAlert'])->name('candidate.job.alert.update');
     });
+
+Route::group([], function (){
+    Route::get('quiz/{quiz_name}/take', [QuizTakeAnswersController::class, 'take_quiz']);
+    Route::post('quiz/{quiz_id}/take', [QuizTakeAnswersController::class, 'store_quiz']);
+    Route::get('quiz/show_results/{quiz_id}/{user_id}/{is_guest}/{take_number}', [QuizTakeAnswersController::class, 'show_results'])->name('quiz_results');
+});
 
 // candidates route without name space
 Route::group(['middleware' => ['auth', 'role:Candidate', 'xss', 'verified.user'], 'prefix' => 'candidate'], function () {

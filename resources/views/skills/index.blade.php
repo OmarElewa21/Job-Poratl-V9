@@ -12,10 +12,24 @@
             <h1>{{ __('messages.skills') }}</h1>
             <div class="section-header-breadcrumb">
                 <a href="#" class="btn btn-primary form-btn addSkillModal back-btn-right">{{ __('messages.skill.add') }}
-                    <i class="fas fa-plus"></i></a>
+                    <i class="fas fa-plus"></i>
+                </a>
+                <a href="#" class="btn btn-success ml-2 form-btn back-btn-right" onclick="importExcel('/admin/skills/classes/uploadExcel')">
+                    {{ __('messages.quizzes.importExcel') }}
+                    <i class="fas fa-plus"></i>
+                </a>
             </div>
         </div>
         <div class="section-body">
+            @if(session()->has('success'))
+                <div class="alert alert-success">
+                    {{ session()->get('success') }}
+                </div>
+            @elseif(session()->has('Error'))
+                <div class="alert alert-danger">
+                    {{ session()->get('success') }}
+                </div>
+            @endif
             <div class="card">
                 <div class="card-body">
                     @livewire('skills')
@@ -25,6 +39,7 @@
         @include('skills.add_modal')
         @include('skills.edit_modal')
         @include('skills.show_modal')
+        <div class="modal fade" tabindex="-1" role="dialog" id="classModal">
     </section>
 @endsection
 @push('scripts')
@@ -35,4 +50,6 @@
     </script>
     <script src="{{ asset('assets/js/summernote.min.js') }}"></script>
     <script src="{{mix('assets/js/skills/skills.js')}}"></script>
+    <script src="{{asset('assets/js/notify.min.js')}}"></script>
+    <script src="{{asset('assets/js/skills/classes.js')}}"> </script>
 @endpush

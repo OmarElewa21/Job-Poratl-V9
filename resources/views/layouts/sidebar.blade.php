@@ -162,6 +162,28 @@
                 </li>
             </ul>
         </li>
+
+        <li class="nav-item dropdown side-menus">
+            <a class="nav-link has-dropdown" href="#">
+                <i class="fas fa-file-invoice"></i>
+                <span>{{ __('messages.quizzes.quizzes_list') }}</span>
+            </a>
+            <ul class="dropdown-menu side-menus">
+                <li class="side-menus {{ Request::is('admin/quizzes/category*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('category.index') }}">
+                        <i class="fas fa-folder"></i>
+                        <span>{{ __('messages.quizzes.category') }}</span>
+                    </a>
+                </li>
+                <li class="side-menus {{ Request::is('admin/quizzes/quiz*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('quiz.index') }}">
+                        <i class="fas fa-file-alt"></i>
+                        <span>{{ __('messages.quizzes.quizzes') }}</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
         <li class="nav-item side-menus dropdown">
             <a class="nav-link has-dropdown" href="#"><i class="fas fa-solar-panel"></i>
                 <span>{{ __('messages.plan.subscriptions') }}</span>

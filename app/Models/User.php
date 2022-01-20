@@ -338,4 +338,8 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     {
         $this->notify(new PasswordReset($token));
     }
+
+    public function quizUser(){
+        return $this->hasMany(QuizUser::class, 'user_id')->orderBy('take_number', 'DESC');
+    }
 }

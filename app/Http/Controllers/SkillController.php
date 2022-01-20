@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateSkillRequest;
 use App\Http\Requests\UpdateSkillRequest;
+use App\Models\CategoryClass;
 use App\Models\Skill;
+use App\Models\SkillCategoryClass;
 use App\Queries\SkillDataTable;
 use App\Repositories\SkillRepository;
 use DataTables;
@@ -14,6 +16,10 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\View\View;
+
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\File;
+use App\Imports\SkillImport;
 
 class SkillController extends AppBaseController
 {
@@ -115,5 +121,48 @@ class SkillController extends AppBaseController
         }
 
         return $this->sendSuccess('Skill deleted successfully.');
+    }
+
+    public function showClasses($skill_id)
+    {
+        try{
+            $skill = Skill::where('id', $skill_id)->with('classes')->first();
+            $classes = CategoryClass::all();
+            return view('skills.classes', compact('skill', 'classes'));
+        }catch (Exception $e){
+            return response($e->getMessage(), 500);
+        }
+    }
+
+
+    public function storeClasses($skill_id, Request $request)
+    {
+        try{
+            Skill::find($skill_id)->SkillCategoryClasses()->delete();
+            foreach($request->classes as $index=>$class_id){
+                SkillCategoryClass::create([
+                    'skill_id'                 => $skill_id,
+                    'class_id'                 => $class_id,
+                    'min_score_percentage'     => $request->min_score_percentage[$index],
+                    'max_score_percentage'     => $request->max_score_percentage[$index],
+                    'class_weight_from_skill'  => $request->class_weight_from_skill[$index]
+                ]);
+            }
+            return response('Successfully added classes to skill', 200);
+        }catch (Exception $e){
+            return response($e->getMessage(), 500);
+        }
+    }
+
+
+    public function uploadExcel(Request $request){
+        try{
+            $file_path = $request->file('file')->store('excels');
+            Excel::import(new SkillImport, $file_path);
+            File::cleanDirectory(storage_path() . '/app/excels');
+            return redirect()->back()->with('success', 'Import made successfully');
+        }catch (Exception $e){
+            return response($e->getMessage(), 500);
+        }
     }
 }

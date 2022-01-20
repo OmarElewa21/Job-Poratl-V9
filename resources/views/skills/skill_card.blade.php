@@ -6,13 +6,17 @@
                     <div class="text-left  employee-data text-limit">
                         <span class="text-decoration-none text-color-gray">
                             <a href="#" class="show-btn"
-                               data-id="{{$skill->id}}">{{ Str::limit($skill->name,30) }}</a>
+                               data-id="{{$skill->id}}">{{ '(' . $skill->id . ') ' . Str::limit($skill->name,30) }}</a>
                             </span>
                     </div>
                 </div>
             </div>
         </div>
         <div class="employee-action-btn">
+            <a title="{{ __('messages.quizzes.classes') }}" class="btn btn-info action-btn"
+               href="#" onclick="classes({{$skill->id}})">
+               <i class="far fa-folder"></i>
+            </a>
             <a title="{{ __('messages.common.edit') }}" class="btn btn-warning action-btn edit-btn"
                data-id="{{$skill->id}}" href="#">
                 <i class="fa fa-edit"></i>

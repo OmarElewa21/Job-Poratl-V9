@@ -68,4 +68,23 @@ class Skill extends Model
     {
         return $this->belongsToMany(Job::class, 'jobs_skill');
     }
+
+    public function SkillCategoryClasses(){
+        return $this->hasMany(SkillCategoryClass::class, 'skill_id');
+    }
+
+    public function classes()
+    {
+        return $this->belongsToMany(
+            CategoryClass::class, SkillCategoryClass::class,
+            'skill_id', 'class_id')->withPivot('min_score_percentage', 'max_score_percentage', 'class_weight_from_skill')->orderBy('category_classes.category_id');
+    }
+
+    public function candidate_skills(){
+        return $this->hasMany(CandidateSkill::class);
+    }
+
+    public function jobs_skills(){
+        return $this->hasMany(JobSkill::class);
+    }
 }

@@ -731,6 +731,9 @@ Route::group([
         // job alert routes.
         Route::get('job-alert', [Candidates\CandidateController::class, 'editJobAlert'])->name('candidate.job.alert');
         Route::post('job-alert', [Candidates\CandidateController::class, 'updateJobAlert'])->name('candidate.job.alert.update');
+    
+        Route::get('/users/quizzes/pending-quizzes', [QuizTakeController::class, 'show_pending_quizzes'])->name('quizzes.pending');
+        Route::get('/users/quizzes/taken-quizzes', [QuizTakeController::class, 'show_taken_quizzes'])->name('quizzes.taken');
     });
 
 Route::group([], function (){

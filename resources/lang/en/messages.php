@@ -81,6 +81,7 @@ return [
     'expired_jobs'                   => 'Expired Jobs',
     'post_comments'               => 'Post Comments',
     'cms_services'               => 'CMS Services',
+    'quizzes_title'                  => 'Quizzes',
 
     'common' => [
         'save'                        => 'Save',

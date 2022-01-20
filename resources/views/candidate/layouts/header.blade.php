@@ -1,3 +1,7 @@
+@php
+    $pending_quizzes = App\Models\QuizUser::where('user_id', auth()->id())->where('is_pending', 1)->count();
+@endphp
+
 <div class="navbar-bg"></div>
 <nav class="navbar navbar-expand-lg main-navbar mb-0 pb-0">
     <a href="{{ route('front.home') }}" class="navbar-brand sidebar-gone-hide">
@@ -153,6 +157,33 @@
                     <span>{{ __('messages.job.job_alert') }}</span>
                 </a>
             </li>
+            <li class="nav-item {{ Request::is('candidate/users/quizzes/pending-quizzes*') || Request::is('candidate/users/quizzes/taken-quizzes*') ? 'active' : '' }}">
+                <a href="{{ route('quizzes.pending') }}"
+                   class="nav-link {{ Request::is('candidate/users/quizzes/pending-quizzes*') || Request::is('candidate/users/quizzes/taken-quizzes*') ? 'active' : ''}}">
+                    <i class="{{$pending_quizzes > 0 ? 'quizzes'  : ''}} fas fa-file-alt" data-count={{$pending_quizzes}}></i>
+                    <span>{{ __('messages.quizzes_title') }}</span>
+                </a>
+            </li>
         </ul>
     </div>
 </nav>
+
+<style>
+    .quizzes[data-count]{
+        position:relative;
+    }
+    .quizzes[data-count]:after{
+        position: absolute;
+        left: -1.2em;
+        top: -2em;
+        content: attr(data-count);
+        padding: .5em;
+        border-radius: 10em;
+        line-height: .9em;
+        color: white;
+        background: rgba(255,0,0,.75);
+        text-align: center;
+        min-width: 2em;
+        font: bold 0.6em sans-serif;
+    }
+</style>

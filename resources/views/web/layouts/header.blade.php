@@ -429,6 +429,9 @@
                                         <li>
                                             <a href="{{ route('candidate.job.alert') }}">{{ __('messages.job.job_alert') }}</a>
                                         </li>
+                                        <li class="userMenu">
+                                            <a href="{{ route('quizzes.pending') }}" class="hover-color">{{ __('messages.quizzes_title') }}</a>
+                                        </li>
                                         @endrole
                                         @role('Employer')
                                         <li>

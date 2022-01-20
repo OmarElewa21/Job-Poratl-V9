@@ -4,8 +4,8 @@
 @endsection
 
 @section('content')
-    <div class="ptb40 custom-pt-40 bg-info">
-        <div class="section-title custom-pb-30">
+    <div class="pb-5 pt-3 bg-secondary text-light">
+        <div class="section-title pb-5">
             <h2 class="text-center h2-title">{{ __('messages.quizzes.quizzes_results') }}</h2>
         </div>
         <div class="user text-uppercase change-font-family">

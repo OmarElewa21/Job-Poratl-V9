@@ -151,6 +151,35 @@ function showSkills(quiz_id, user_id, take_number, is_guest=0){
 
 function skillMatchingSet(quiz_id, user_id, take_number, is_guest=0){
     let allSelects = document.getElementById('skillSelectionForm').querySelectorAll("input[class='select']");
+    let selectAll = document.getElementById("select-all");
+    selectAll.addEventListener('change', ()=>{
+        if(document.getElementById("select-all").checked == true){
+            let skillIdsList = [];
+            [].forEach.call(allSelects, (selectElement)=>{
+                selectElement.checked = true;
+                skillIdsList.push(selectElement.value);
+            });
+            $.ajax({
+                url: "/admin/quizzes/quiz/" + quiz_id + "/skills/show",
+                type: 'GET',
+                data: {
+                    'user_id'     : user_id,
+                    'take_number' : take_number,
+                    'is_guest'    : is_guest,
+                    'skillIdsList': skillIdsList
+                },
+                success: function (result) {
+                    $('#gradesModel').html(result);
+                    $('#gradesModel').appendTo('body').modal('show');
+                    skillMatchingSet(quiz_id, user_id, take_number, is_guest=0);
+                },
+                error: function (result) {
+                    displayErrorMessage(result.responseText);
+                }
+            })
+        }
+    });
+    
     [].forEach.call(allSelects, (selectElement)=>{
         selectElement.addEventListener('change', ()=>{
             let skillIdsList = [];
@@ -177,7 +206,34 @@ function skillMatchingSet(quiz_id, user_id, take_number, is_guest=0){
                 }
             })
         });
-    });    
+    });
+}
+
+function skillCardSorting(){
+    selectedVal = $( "#sortingSelect option:selected" ).val();
+    switch(selectedVal){
+        case "random":
+            $("#skillListContainer").html("");
+            Object.entries(skillCards).sort(function(a, b){
+                return 0.5 - Math.random()
+            }).forEach((elem)=>{$("#skillListContainer").append(elem[1])});
+        break;
+        
+        case "heighest":
+            $("#skillListContainer").html("");
+            Object.entries(skillCards).sort(function(a, b){
+                return b[1].querySelector('.progress').ariaValueNow - a[1].querySelector('.progress').ariaValueNow
+            }).forEach((elem)=>{$("#skillListContainer").append(elem[1])});
+        break;
+        
+        case "lowest":
+            $("#skillListContainer").html("");
+            Object.entries(skillCards).sort(function(a, b){
+                return a[1].querySelector('.progress').ariaValueNow - b[1].querySelector('.progress').ariaValueNow
+            }).forEach((elem)=>{$("#skillListContainer").append(elem[1])});
+        break;
+        default:
+    }
 }
 
 

@@ -156,7 +156,7 @@ class QuizTakeAnswersController extends Controller
         }
         return $quizGrades;
     }
-        
+
 
     private function quiz_grades($quiz_id, $user_id, $take_number, $is_guest=false){
         if($is_guest){
@@ -190,6 +190,7 @@ class QuizTakeAnswersController extends Controller
                 'guest_id'          => $is_guest ? $user_id: null,
                 'category_id'       => $category_id,
                 'category_grade'    => $score,
+                'category_percentage' => $score > 0 ? $score/$range->range_max_val *100 : $score/$range->range_min_val *100,
                 'take_number'       => $take_number,
                 'result_sign'       => $range->result_sign,
                 'result_text'       => $range->result_text,
@@ -279,11 +280,25 @@ class QuizTakeAnswersController extends Controller
             $user = User::find($user_id);
             $name = $user->first_name . ' ' . $user->last_name;
         }
-        
+
         for($i = 0; $i<2; $i++){
             $quiz_grades = $this->results($quiz_id, $user_id, $is_guest, $take_number);
         }
-        return view('candidate.quiz_take.show_results', compact('quiz_grades', 'name'));
+
+        if($is_guest){
+            $all_quiz_grades = QuizGrade::where('quiz_id', $quiz_id)
+                                    ->where('guest_id', $user_id)
+                                    ->where('take_number', $take_number)
+                                    ->get();
+        }else{
+            $all_quiz_grades = QuizGrade::where('quiz_id', $quiz_id)
+                                    ->where('user_id', $user_id)
+                                    ->where('take_number', $take_number)
+                                    ->with('category')
+                                    ->get();
+        }           
+        
+        return view('candidate.quiz_take.show_results', compact('quiz_grades', 'all_quiz_grades', 'name'));
     }
 
 
@@ -346,7 +361,7 @@ class QuizTakeAnswersController extends Controller
                     'is_guest'      => 0,
                     'take_number'   => $take_number
                 ]);
-                
+
             }else{
                 $this->quiz_grades($quiz_id, $guest->id, $take_number, true);
                 return redirect()->route('quiz_results', [

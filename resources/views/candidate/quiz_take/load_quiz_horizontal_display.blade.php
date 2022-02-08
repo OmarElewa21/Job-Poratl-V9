@@ -15,15 +15,17 @@
             <div class="ml-5">
                 @auth
                     <a href="{{url('/candidate/users/quizzes/pending-quizzes')}}" class="d-flex align-items-center back">
-                        <span class="font-weight-bold text-info">Back</span>
+                        <i class="fas fa-arrow-left text-danger mr-2"></i>
+                        <span class="font-weight-bold text-danger">Back</span>
                     </a>
                 @else
                     <a href="/" class="d-flex align-items-center back">
                         <span class="font-weight-bold text-info">Home</span>
                     </a>
                 @endauth
+                
             </div>
-            <div class="mr-5 d-flex">
+            <div class="mr-5 d-flex text-info">
                 <h4 class="font-weight-bold">Quiz# </h4>
                 <span class="h4 ml-2">{{$quiz->name}}</span>
             </div>
@@ -52,17 +54,16 @@
                     </div>
                 @endif
 
-                <div class="mb-4">
-                    <div class="mr-5 d-flex">
-                        {{-- <h3 class="font-weight-bold">Quiz# </h3> --}}
-                        <span class="h3">{{$quiz->name}}</span>
+                <div class="mb-5">
+                    <div class="mr-5 text-center">
+                        <span class="h3 ml-2">{{$quiz->name}}</span>
                     </div>
                 </div>
 
                 @foreach($questions as $index=>$question)
                     <table class="w-100 mt-5">
                         <tr class="row mb-3">
-                            <th class="col-7">
+                            <th class="col-7 text-danger">
                                 <span class="font-weight-bold mr-1">{{$index+1}}.</span>
                                 <span class="font-weight-normal">{{$question['question_text']}}</span>
                             </th>
@@ -85,7 +86,7 @@
                     </table>
                 @endforeach
                 <div class="text-center mb-5">
-                    <input class="btn btn-outline-primary btn-lg" type="submit" id="submit_button" value="Send my answers">
+                    <input class="btn btn-outline-danger btn-lg" id="submit_button" type="submit" value="Send my answers">
                 </div>
             </section>
             {{ Form::close() }}
@@ -117,7 +118,20 @@
                 -ms-transform: scale(1.5); /* IE 9 */
                 -webkit-transform: scale(1.5); /* Chrome, Safari, Opera */
                 transform: scale(1.5);
-            }
+        }
+        body {
+            display: flex;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: #313645;
+            font-family: verdana, sans-serif;
+            color: white;
+        }
+        .text-danger{
+            color: rgb(243, 144, 144) !important;
+        }
     </style>
 
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
@@ -140,10 +154,10 @@
                     }
                 })
                 if(checked == 0){
-                    tr_answer.parentElement.style.backgroundColor = "#fff7f8";
+                    tr_answer.parentElement.parentElement.style.backgroundColor = "#2a2f3b";
                 }
                 else{
-                    tr_answer.parentElement.style.backgroundColor = "white";
+                    tr_answer.parentElement.parentElement.style.backgroundColor = "#313645";
                 }
             });
         });

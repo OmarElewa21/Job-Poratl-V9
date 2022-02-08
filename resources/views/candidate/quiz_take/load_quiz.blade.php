@@ -15,7 +15,8 @@
             <div class="ml-5">
                 @auth
                     <a href="{{url('/candidate/users/quizzes/pending-quizzes')}}" class="d-flex align-items-center back">
-                        <span class="font-weight-bold text-info">Back</span>
+                        <i class="fas fa-arrow-left text-danger mr-2"></i>
+                        <span class="font-weight-bold text-danger">Back</span>
                     </a>
                 @else
                     <a href="/" class="d-flex align-items-center back">
@@ -24,7 +25,7 @@
                 @endauth
                 
             </div>
-            <div class="mr-5 d-flex">
+            <div class="mr-5 d-flex text-info">
                 <h4 class="font-weight-bold">Quiz# </h4>
                 <span class="h4 ml-2">{{$quiz->name}}</span>
             </div>
@@ -53,8 +54,8 @@
                     </div>
                 @endif
 
-                <div class="mb-4">
-                    <div class="mr-5 d-flex">
+                <div class="mb-5">
+                    <div class="mr-5 text-center">
                         <span class="h3 ml-2">{{$quiz->name}}</span>
                     </div>
                 </div>
@@ -63,7 +64,7 @@
     
                     <div class="w-100 d-flex justify-content-between mb-5">
                         <div>
-                            <div class="mb-3">
+                            <div class="mb-3 text-danger">
                                 <span class="font-weight-bold mr-1">{{$index+1}}.</span>
                                 <span>{{$question['question_text']}}<span>
                             </div>
@@ -82,7 +83,7 @@
                     </div>
                 @endforeach
                 <div class="text-center mb-5">
-                    <input class="btn btn-outline-primary btn-lg" id="submit_button" type="submit" value="Send my answers">
+                    <input class="btn btn-outline-danger btn-lg" id="submit_button" type="submit" value="Send my answers">
                 </div>
             </section>
             {{ Form::close() }}
@@ -101,6 +102,20 @@
         }
         .width-100 {
             width: 100%;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: #313645;
+            font-family: verdana, sans-serif;
+            color: white;
+        }
+        .text-danger{
+            color: rgb(243, 144, 144) !important;
         }
     </style>
 
@@ -124,10 +139,10 @@
                     }
                 })
                 if(checked == 0){
-                    tr_answer.parentElement.parentElement.parentElement.style.backgroundColor = "#fff7f8";
+                    tr_answer.parentElement.parentElement.parentElement.style.backgroundColor = "#2a2f3b";
                 }
                 else{
-                    tr_answer.parentElement.parentElement.parentElement.style.backgroundColor = "white";
+                    tr_answer.parentElement.parentElement.parentElement.style.backgroundColor = "#313645";
                 }
             });
         });

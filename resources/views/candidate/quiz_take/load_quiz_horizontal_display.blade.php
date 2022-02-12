@@ -15,8 +15,8 @@
             <div class="ml-5">
                 @auth
                     <a href="{{url('/candidate/users/quizzes/pending-quizzes')}}" class="d-flex align-items-center back">
-                        <i class="fas fa-arrow-left text-danger mr-2"></i>
-                        <span class="font-weight-bold text-danger">Back</span>
+                        <i class="fas fa-arrow-left text-red mr-2"></i>
+                        <span class="font-weight-bold text-red">Back</span>
                     </a>
                 @else
                     <a href="/" class="d-flex align-items-center back">
@@ -29,7 +29,10 @@
                 <h4 class="font-weight-bold">Quiz# </h4>
                 <span class="h4 ml-2">{{$quiz->name}}</span>
             </div>
-            <div></div>
+            <div>
+                <input type="checkbox" name="night_mode" id="night_mode">
+                <label for="night_mode"> Night Mode </label>
+            </div>
         </header>
     
         <main class="container">
@@ -44,11 +47,11 @@
                 @if (!auth()->check())
                     <div class="d-flex flex-row flex-wrap justify-content-around mb-4">
                         <div class="form-group col-sm-12 col-md-5">
-                            {!! Form::label('name', 'Name', ['class' => 'font-weight-bold']) !!}<span class="text-danger">*</span>
+                            {!! Form::label('name', 'Name', ['class' => 'font-weight-bold']) !!}<span class="text-red">*</span>
                             {!! Form::text('name', null, ['id'=>'name','class' => 'form-control','required']) !!}
                         </div>
                         <div class="form-group col-sm-12 col-md-5">
-                            {!! Form::label('email', 'Email' , ['class' => 'font-weight-bold']) !!}<span class="text-danger">*</span>
+                            {!! Form::label('email', 'Email' , ['class' => 'font-weight-bold']) !!}<span class="text-red">*</span>
                             {!! Form::text('email', null, ['id'=>'email','class' => 'form-control','required']) !!}
                         </div>
                     </div>
@@ -63,7 +66,7 @@
                 @foreach($questions as $index=>$question)
                     <table class="w-100 mt-5">
                         <tr class="row mb-3">
-                            <th class="col-7 text-danger">
+                            <th class="col-7 text-red">
                                 <span class="font-weight-bold mr-1">{{$index+1}}.</span>
                                 <span class="font-weight-normal">{{$question['question_text']}}</span>
                             </th>
@@ -125,41 +128,69 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            background-color: #313645;
+            background-color: white;
             font-family: verdana, sans-serif;
-            color: white;
+            color: black;
         }
-        .text-danger{
-            color: rgb(243, 144, 144) !important;
+        .text-red{
+            color: #dc3545;
         }
     </style>
 
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
     <script>
+        function checkAnswers(color=false){
+            let tr_answers = document.querySelectorAll(".tr-answer");
+                tr_answers.forEach((tr_answer)=> {
+                    let checked = 0;
+                    let inputs = tr_answer.querySelectorAll('input');
+                    inputs.forEach((input)=>{
+                        if(input.checked){
+                            checked = 1;
+                        }
+                    })
+                    if(color){
+                        tr_answer.parentElement.parentElement.style.backgroundColor = $("body").css("background-color");
+                    }else{
+                        if(checked == 0){
+                            if($("body").css("background-color") == 'rgb(255, 255, 255)'){
+                                tr_answer.parentElement.parentElement.style.backgroundColor = "#CEC5C5";
+                            }else{
+                                tr_answer.parentElement.parentElement.style.backgroundColor = "#2a2f3b";
+                            }
+                        }
+                        else{
+                            tr_answer.parentElement.parentElement.style.backgroundColor = $("body").css("background-color");
+                        }
+                    }
+                });
+        }
+
         $(document).ready(function(){
             $(".alert").delay(3000).slideUp(300);
         });
 
         let submit_button = document.getElementById("submit_button");
 
-        submit_button.addEventListener("click", function(e) {
-        let tr_answers = document.querySelectorAll(".tr-answer");
-            tr_answers.forEach((tr_answer)=> {
-                let checked = 0;
-                let inputs = tr_answer.querySelectorAll('input');
-                inputs.forEach((input)=>{
-                    if(input.checked){
-                        checked = 1;
-                    }
-                })
-                if(checked == 0){
-                    tr_answer.parentElement.parentElement.style.backgroundColor = "#2a2f3b";
-                }
-                else{
-                    tr_answer.parentElement.parentElement.style.backgroundColor = "#313645";
-                }
-            });
-        });
+        submit_button.addEventListener("click", function(){checkAnswers()});
+
+        $("#night_mode").change(function(){
+            if($(this).is(':checked')){
+                $("body").css({
+                    "background-color": '#313645',
+                    "color" : "white"
+                });
+                $(".text-red").css("color", "rgb(243, 144, 144)");
+                checkAnswers(true)
+            }else{
+                $("body").css({
+                    "background-color": 'white',
+                    "color" : "black"
+                });
+                $(".text-red").css("color", "#dc3545");
+                checkAnswers(true)
+            }
+        })
     </script>
 </body>

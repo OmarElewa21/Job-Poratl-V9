@@ -226,7 +226,7 @@ class QuizTakeAnswersController extends Controller
         $quiz = Quiz::where('name', $quiz_name)
             ->with(['quiz_categories' => function($q){
                 $q->inRandomOrder();
-            }])->inRandomOrder()->first();
+            }])->first();
         if(!$quiz->enable_guests){
             if(!auth()->check() || auth()->user()->roles[0]->id == 2){
                 abort(403, 'You are not allowed to view or take this quiz');
@@ -249,6 +249,7 @@ class QuizTakeAnswersController extends Controller
                             ->get(), true)
             );
         }
+        shuffle($questions);
         if($quiz->horizontal_display){
             return view('candidate.quiz_take.load_quiz_horizontal_display', compact('quiz', 'questions'));
         }else{
@@ -296,7 +297,7 @@ class QuizTakeAnswersController extends Controller
                                     ->where('take_number', $take_number)
                                     ->with('category')
                                     ->get();
-        }           
+        }
         
         return view('candidate.quiz_take.show_results', compact('quiz_grades', 'all_quiz_grades', 'name'));
     }

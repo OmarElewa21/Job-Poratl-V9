@@ -1207,5 +1207,6 @@ return [
         'user_score'            => 'User Score',
         'is_achieved'           => 'Achieved',
         "category_name_"        => 'Category Name',
+        'donnotShow'            => "Don't show in results"
     ],
 ];

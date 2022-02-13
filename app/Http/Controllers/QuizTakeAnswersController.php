@@ -258,19 +258,19 @@ class QuizTakeAnswersController extends Controller
     }
 
 
-    public function results($quiz_id, $user_id, $is_guest, $take_number){
+    private function results($quiz_id, $user_id, $is_guest, $take_number){
         if($is_guest){
-            $__quiz_grades =  QuizGrade::where('quiz_id', $quiz_id)
+            $quiz_grades =  QuizGrade::where('quiz_id', $quiz_id)
                 ->where('guest_id', $user_id)
                 ->where('take_number', $take_number)
-                ->where('show', 1)->with('category')->get();
+                ->with('category')->get();
         }else{
-            $__quiz_grades = QuizGrade::where('quiz_id', $quiz_id)
+            $quiz_grades = QuizGrade::where('quiz_id', $quiz_id)
                 ->where('user_id', $user_id)
                 ->where('take_number', $take_number)
-                ->where('show', 1)->with('category')->get();
+                ->with('category')->get();
         }
-        return $this->getQuizGrades($__quiz_grades);        
+        return $this->getQuizGrades($quiz_grades);
     }
 
 
@@ -283,23 +283,26 @@ class QuizTakeAnswersController extends Controller
         }
 
         for($i = 0; $i<2; $i++){
-            $quiz_grades = $this->results($quiz_id, $user_id, $is_guest, $take_number);
-        }
-
-        if($is_guest){
-            $all_quiz_grades = QuizGrade::where('quiz_id', $quiz_id)
-                                    ->where('guest_id', $user_id)
-                                    ->where('take_number', $take_number)
-                                    ->get();
-        }else{
-            $all_quiz_grades = QuizGrade::where('quiz_id', $quiz_id)
-                                    ->where('user_id', $user_id)
-                                    ->where('take_number', $take_number)
-                                    ->with('category')
-                                    ->get();
+            $this->results($quiz_id, $user_id, $is_guest, $take_number);
         }
         
-        return view('candidate.quiz_take.show_results', compact('quiz_grades', 'all_quiz_grades', 'name'));
+
+        if($is_guest){
+            $quiz_grades = QuizGrade::where('quiz_id', $quiz_id)
+                            ->where('guest_id', $user_id)
+                            ->where('take_number', $take_number)
+                            ->where('show', 1)
+                            ->get();
+
+        }else{
+            $quiz_grades = QuizGrade::where('quiz_id', $quiz_id)
+                            ->where('user_id', $user_id)
+                            ->where('take_number', $take_number)
+                            ->where('show', 1)
+                            ->get();
+        }
+        
+        return view('candidate.quiz_take.show_results', compact('quiz_grades', 'name'));
     }
 
 

@@ -37,7 +37,7 @@ class Quiz extends Model
     public function quiz_categories(){
         return $this->belongsToMany(
             QuizCategory::class, 'quiz_quiz_categories',
-            'quiz_id', 'category_id')->withPivot('n_questions', 'min_score', 'max_score');
+            'quiz_id', 'category_id')->withPivot('n_questions', 'min_score', 'max_score', 'show');
     }
 
     public function quiz_quiz_categories(){
@@ -69,11 +69,11 @@ class Quiz extends Model
     }
 
     public function quiz_candidate_grades(){
-        return $this->hasMany(QuizGrade::class)->whereNull('guest_id')->groupBy('user_id', 'take_number');
+        return $this->hasMany(QuizGrade::class)->whereNull('guest_id')->groupBy('user_id')->groupBy('take_number');
     }
 
     public function quiz_guests_grades(){
-        return $this->hasMany(QuizGrade::class)->whereNull('user_id')->groupBy('guest_id', 'take_number');
+        return $this->hasMany(QuizGrade::class)->whereNull('user_id')->groupBy('guest_id')->groupBy('take_number');
     }
 
     public function defaultSkills()

@@ -5,7 +5,7 @@
             <h5 class="modal-title"> {{ __('messages.quizzes.edit_quiz') }} </h5>
             <button type="button" aria-label="Close" class="close" data-dismiss="modal">×</button>
         </div>
-        {!! Form::open(['id'=>'editQuizForm', 'url' => '/admin/quizzes/quiz/' . $quiz->id . '/edit']) !!}
+        {!! Form::open(['id'=>'editQuizForm', 'url' => '/admin/quizzes/quiz/' . $quiz->id, 'method' => 'put']) !!}
         <div class="modal-body">
             <div class="alert alert-danger d-none" id="validationErrorsBox"></div>
             <div class="row">
@@ -39,9 +39,13 @@
                 <div class="form-group col-sm-12 categoryParentDiv">
                     <div class="row">
                         <label class="col-1"></label>
-                        <label class="col-6"> {{__('messages.quizzes.category')}} </label>
+                        <label class="col-4"> {{__('messages.quizzes.category')}} </label>
+
                         <label class="col-1"></label>
-                        <label class="col-4">{{__('messages.quizzes.specify_number_of_questions')}}</label>
+                        <label class="col-3">{{__('messages.quizzes.specify_number_of_questions')}}</label>
+                        <label class="col-1"></label>
+
+                        <label class="col-2">{{__('messages.quizzes.donnotShow')}}</label>
                     </div>
 
                     @foreach($quiz->quiz_categories as $quiz_category)
@@ -50,24 +54,29 @@
                                 <i class="fas fa-minus-circle text-danger fas-delete" onclick="deleteCategory(this)"></i>
                             </div>
 
-                            <div class="col-6">
-                                <select name="categories[]" class="form-control col-sm-12" required>
-                                    @foreach ($categories as $category)
-                                        <option value="{{$category->id}}" {{$category->id == $quiz_category->id ? 'selected': ''}}>{{$category->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                            <select name="categories[]" class="form-control col-4 category_name" required>
+                                @foreach ($categories as $category)
+                                    <option value="{{$category->id}}" {{$category->id == $quiz_category->id ? 'selected': ''}}>{{$category->name}}</option>
+                                @endforeach
+                            </select>
 
                             <div class="col-1">
                                 <i class="fas fa-plus-circle text-success fas-add" onclick="addCategory()"></i>
                             </div>
 
-                            <div class="col-4">
+                            <div class="col-3">
                                 {!! Form::number('n_questions[]', $quiz_category->pivot->n_questions, [
                                     'class' => 'form-control n_questions',
                                     'required',
                                     'min' => 1
                                     ])!!}
+                            </div>
+
+                            <div class="col-1">
+                            </div>
+    
+                            <div class="col-2 d-flex align-items-center">
+                                <input type="checkbox" class="donnotShowCheckbox" id="donnotShowCheckbox" {{$quiz_category->pivot->show ? '' : 'checked'}}>
                             </div>
                         </div>
                     @endforeach

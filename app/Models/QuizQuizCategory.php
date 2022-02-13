@@ -16,6 +16,7 @@ class QuizQuizCategory extends Model
         'category_id',
         'n_questions',
         'min_score',
-        'max_score'
+        'max_score',
+        'show'
     ];
 }

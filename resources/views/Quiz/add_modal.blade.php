@@ -33,9 +33,13 @@
                 <div class="form-group col-sm-12 categoryParentDiv">
                     <div class="row">
                         <label class="col-1"></label>
-                        <label class="col-6"> {{__('messages.quizzes.category')}} </label>
+                        <label class="col-4"> {{__('messages.quizzes.category')}} </label>
+
                         <label class="col-1"></label>
-                        <label class="col-4">{{__('messages.quizzes.specify_number_of_questions')}}</label>
+                        <label class="col-3">{{__('messages.quizzes.specify_number_of_questions')}}</label>
+                        <label class="col-1"></label>
+
+                        <label class="col-2">{{__('messages.quizzes.donnotShow')}}</label>
                     </div>
 
                     <div id="category-div" class="row mt-2">
@@ -43,24 +47,29 @@
                             <i class="fas fa-minus-circle text-danger fas-delete" onclick="deleteCategory(this)"></i>
                         </div>
 
-                        <div class="col-6">
-                            <select name="categories[]" class="form-control col-sm-12" required>
-                                @foreach ($categories as $category)
-                                    <option value="{{$category->id}}">{{$category->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        <select name="categories[]" class="form-control col-4 category_name" required>
+                            @foreach ($categories as $category)
+                                <option value="{{$category->id}}">{{$category->name}}</option>
+                            @endforeach
+                        </select>
 
                         <div class="col-1">
                             <i class="fas fa-plus-circle text-success fas-add" onclick="addCategory()"></i>
                         </div>
 
-                        <div class="col-4">
+                        <div class="col-3">
                             {!! Form::number('n_questions[]', null, [
                                 'class' => 'form-control n_questions',
                                 'required',
                                 'min' => 1
                                 ])!!}
+                        </div>
+
+                        <div class="col-1">
+                        </div>
+
+                        <div class="col-2 d-flex align-items-center">
+                            <input type="checkbox" name="show" class="donnotShowCheckbox" id="donnotShowCheckbox">
                         </div>
                     </div>
                 </div>

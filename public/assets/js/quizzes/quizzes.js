@@ -11,14 +11,23 @@ function adjust_category_selection(){
     }
 }
 
+
+function checkForDontShowInputs(){
+    $(".donnotShowCheckbox").each(function(){
+        if($(this).is(":checked")){
+            $(this).attr('name', 'show[' + $(this).parent().siblings('.category_name').val() + ']');
+        }
+        
+    })
+}
+
 /**
  * Adding new selection category
  */
 function addCategory(){
     let cat_dev = $('#category-div').clone(true);
     cat_dev.find('.n_questions').val('');
-    cat_dev.find('.min-value').val('');
-    cat_dev.find('.max-value').val('');
+    cat_dev.find('#donnotShowCheckbox').prop("checked", false);
     $('.categoryParentDiv').append(cat_dev);
     adjust_category_selection();
 }
@@ -428,6 +437,7 @@ $(document).on('submit', '#addQuizForm', function (e) {
     e.preventDefault();
     processingBtn('#addQuizForm', '#btnSave', 'loading');
     e.preventDefault();
+    checkForDontShowInputs();
     $.ajax({
         url: '/admin/quizzes/quiz',
         type: 'POST',
@@ -450,6 +460,7 @@ $(document).on('submit', '#editQuizForm', function (e) {
     e.preventDefault();
     processingBtn('#editQuizForm', '#btnSave', 'loading');
     e.preventDefault();
+    checkForDontShowInputs();
     $.ajax({
         url: '/admin/quizzes/quiz/' + $('#quiz_id').val(),
         type: 'PUT',

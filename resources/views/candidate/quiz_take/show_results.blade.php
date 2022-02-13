@@ -8,7 +8,7 @@
 @endsection
 
 @section('content')
-    <div class="pb-5 pt-3 bg-secondary text-light">
+    <div class="ptb40 custom-pt-40 bg-info">
         <div class="section-title custom-pb-30">
             <h2 class="text-center h2-title">{{ __('messages.quizzes.quizzes_results') }}</h2>
         </div>
@@ -36,12 +36,12 @@
         </div>
 
         <div class="d-flex flex-row flex-wrap justify-content-center">
-            @foreach ($all_quiz_grades as $all_cat_grade)
-                <div style="width: 30%" class="mb-3">
-                    <p class="font-weight-bold h6 text-dark">{{$all_cat_grade->category->name}}</p>
+            @foreach ($quiz_grades as $quiz_grade)
+                <div style="width: 30%; margin-bottom:1%">
+                    <p class="font-weight-bold h4 text-dark">{{$quiz_grade->category->name}}</p>
                     <p>
-                        <span class="font-weight-bold h6 text-secondary">{{$all_cat_grade->result_sign}}</span>:
-                        <span class="text-success">{!! is_null($all_cat_grade->category_percentage) ? "<i class=\"fas fa-check-circle\"></i>" : $all_cat_grade->category_percentage . "%" !!}</span>
+                        <span class="font-weight-bold h5 text-secondary">{{$quiz_grade->result_sign}}</span>:
+                        <span class="text-success">{!! is_null($quiz_grade->category_percentage) ? "<i class=\"fas fa-check-circle\"></i>" : $quiz_grade->category_percentage . "%" !!}</span>
                     </p>
                 </div>
             @endforeach
@@ -49,8 +49,7 @@
 
         <div style="margin-top:3%;">
             <h3 class="text-primary">Interpretation of Results</h3>
-            <div class="ml-md-5">
-                @foreach ($quiz_grades as $cat_grade)
+            @foreach ($quiz_grades as $cat_grade)
                 <ul class="cat">
                     @php
                         $result_text = explode("\n", $cat_grade->result_text);
@@ -61,13 +60,11 @@
                     @endphp
                 </ul>
             @endforeach
-            </div>
-            
 
-            @foreach ($all_quiz_grades as $all_cat_grade)
-                @if (!is_null($all_cat_grade->category_percentage))
+            @foreach ($quiz_grades as $quiz_grade)
+                @if (!is_null($quiz_grade->category_percentage))
                     @php
-                        array_push($categories, [$all_cat_grade->category->name, $all_cat_grade->category_percentage])
+                        array_push($categories, [$quiz_grade->category->name, $quiz_grade->category_percentage])
                     @endphp
                 @endif
             @endforeach

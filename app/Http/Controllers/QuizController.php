@@ -171,7 +171,7 @@ class QuizController extends AppBaseController
                     'n_questions'   => $request->n_questions[$index],
                     'min_score'     => $question->min_answer_weight * $request->n_questions[$index],
                     'max_score'     => $question->max_answer_weight * $request->n_questions[$index],
-                    'show'          => array_key_exists($category_id, $request->show) ? 0 : 1
+                    'show'          => (!is_null($request->show) && array_key_exists($category_id, $request->show)) ? 0 : 1
                 ]);
             }
             return response("Quiz Updated Successfully", 200);

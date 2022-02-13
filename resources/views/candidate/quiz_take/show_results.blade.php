@@ -21,9 +21,9 @@
             <i class="fa fa-calendar" aria-hidden="true"></i>
             <span class="change-font-family">
                 @php
+                    $categories = [];
                     foreach ($quiz_grades as $grade){
                         echo date_format($grade->created_at, "F j,Y , g:i A");
-                        $categories = [];
                         break;
                     }
                 @endphp
@@ -151,7 +151,6 @@
         data.addColumn('string', 'Topping');
         data.addColumn('number', 'percentage');
         let categories = <?php echo json_encode($categories); ?>;
-        console.log(categories);
         data.addRows(categories);
 
         if(window.matchMedia("(min-width: 1200px)").matches){

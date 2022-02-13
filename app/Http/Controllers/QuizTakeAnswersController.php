@@ -35,7 +35,7 @@ class QuizTakeAnswersController extends Controller
 
     private function siblings_sorting($quizGrades = []){
         $quizGradesSiblingsSorting = [];
-        foreach($quizGrades as $index=>$quizGrade){
+        foreach($quizGrades as $index=>$quizGrade){            
             if($index == 0){
                 $quizGradesSiblingsSorting[$index][] = $quizGrade;
             }
@@ -194,7 +194,7 @@ class QuizTakeAnswersController extends Controller
                 'take_number'       => $take_number,
                 'result_sign'       => $range->result_sign,
                 'result_text'       => $range->result_text,
-                'show'              => 1
+                'show'              => QuizQuizCategory::where('quiz_id', $quiz_id)->where('category_id', $category_id)->first()->show
             ]);
 
             if(!CategoryClass::where('category_id', $category_id)->where('name', $range->result_sign)->exists()){
@@ -284,8 +284,7 @@ class QuizTakeAnswersController extends Controller
 
         for($i = 0; $i<2; $i++){
             $this->results($quiz_id, $user_id, $is_guest, $take_number);
-        }
-        
+        } 
 
         if($is_guest){
             $quiz_grades = QuizGrade::where('quiz_id', $quiz_id)

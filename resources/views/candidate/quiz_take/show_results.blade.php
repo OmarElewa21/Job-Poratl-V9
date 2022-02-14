@@ -32,42 +32,75 @@
     </div>
     
     <div class="results-content">
-        <div id="chart_div">
-        </div>
-
-        <div class="d-flex flex-row flex-wrap justify-content-center">
+        <div class="chart_div">
             @foreach ($quiz_grades as $quiz_grade)
-                <div style="width: 30%; margin-bottom:1%">
-                    <p class="font-weight-bold h4 text-dark">{{$quiz_grade->category->name}}</p>
-                    <p>
-                        <span class="font-weight-bold h5 text-secondary">{{$quiz_grade->result_sign}}</span>:
-                        <span class="text-success">{!! is_null($quiz_grade->category_percentage) ? "<i class=\"fas fa-check-circle\"></i>" : $quiz_grade->category_percentage . "%" !!}</span>
-                    </p>
-                </div>
-            @endforeach
-        </div>
+                @if (!is_null($quiz_grade->category_percentage) && count($quiz_grade->category->classes) == 2)
+                    <div style="margin-bottom: 30px; padding-top:5px">
+                        <p class="text-center font-weight-bold mb-2">{{$quiz_grade->category->name}}</p>
+                        @if (!is_null($quiz_grade->category->description))
+                            <p class="text-center text-secondary">{{$quiz_grade->category->description}}</p>
+                        @endif
 
-        <div style="margin-top:3%;">
-            <h3 class="text-primary">Interpretation of Results</h3>
-            @foreach ($quiz_grades as $cat_grade)
-                <ul class="cat">
-                    @php
-                        $result_text = explode("\n", $cat_grade->result_text);
-                        foreach($result_text as $text){
-                            $text = str_replace("\\n", "", $text);
-                            echo "<li>$text</li>";
-                        }
-                    @endphp
-                </ul>
-            @endforeach
+                        <div>
+                            @php
+                                $percentage = $quiz_grade->category_percentage/2 + 50;
+                            @endphp
+                            <label class="change-font-family text-success"> {{$quiz_grade->result_sign}}: <span class="font-wight-bold change-font-family">{{$percentage}}%</span> </label>
+                            
+                            <div class="progress" style="margin-bottom:0">
+                                
+                                <div class="progress-bar bg-success font-wieght-bold" role="progressbar" style="width: {{$percentage}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                    {{$percentage}}%
+                                </div>
+                                <div class="progress-bar font-wieght-bold" role="progressbar" style="width: {{100 - $percentage}}%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                    {{100 - $percentage}}%
+                                </div>
+                            </div>
 
-            @foreach ($quiz_grades as $quiz_grade)
-                @if (!is_null($quiz_grade->category_percentage))
-                    @php
-                        array_push($categories, [$quiz_grade->category->name, $quiz_grade->category_percentage])
-                    @endphp
+                            <label class="float-right change-font-family text-primary">
+                                @foreach ($quiz_grade->category->classes as $class)
+                                    @if ($quiz_grade->result_sign != $class->name)
+                                        {{$class->name}}: <span class="font-wight-bold change-font-family">{{100 - $percentage}}%</span>
+                                    @endif
+                                @endforeach
+                            </label>
+                        </div>
+                    </div>
+                    <hr>
                 @endif
             @endforeach
+        </div>
+
+        <div class="d-flex flex-row flex-wrap chart_div" style="border:none; padding-top:0">
+            @foreach ($quiz_grades as $quiz_grade)
+                @if (count($quiz_grade->category->classes) != 2)
+                    <div style="width: 30%; margin-bottom:1%">
+                        <p class="font-weight-bold text-dark">{{$quiz_grade->category->name}}</p>
+                        <p>
+                            <span class="font-weight-bold text-secondary">{{$quiz_grade->result_sign}}</span>:
+                            <span class="text-success">{!! is_null($quiz_grade->category_percentage) ? "<i class=\"fas fa-check-circle\"></i>" : $quiz_grade->category_percentage . "%" !!}</span>
+                        </p>
+                    </div>
+                @endif
+            @endforeach
+        </div>
+
+        <div style="margin-top:2%;">
+            <h3 class="text-primary">Interpretation of Results</h3>
+            <div class="ml-5">
+                @foreach ($quiz_grades as $cat_grade)
+                    <ul class="cat">
+                        @php
+                            $result_text = explode("\n", $cat_grade->result_text);
+                            foreach($result_text as $text){
+                                $text = str_replace("\\n", "", $text);
+                                echo "<li>$text</li>";
+                            }
+                        @endphp
+                    </ul>
+                @endforeach
+            </div>
+            
         </div>
     </div>
 @endsection
@@ -103,8 +136,8 @@
         padding-left: 10px;
     }
     .cat {
-        margin-top: 4%;
-        margin-bottom: 4%;
+        margin-top: 1%;
+        margin-bottom: 1%;
     }
     .cat li{
         list-style-type: initial;
@@ -123,56 +156,11 @@
     #graph-img {
         width: 300px;
     }
-    #chart_div > div > div > div {
-        position: relative !important;
-        left: unset !important;
-        margin: auto !important;
-        
+    .chart_div {
+        width:75%;
+        margin:auto;
+        margin-bottom:2%;
+        border:1px solid #dcdcdc;
+        padding: 1% 3%;
     }
 </style>
-
-@section('scripts')
-    <!--Load the AJAX API-->
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-
-    // Load the Visualization API and the corechart package.
-    google.charts.load('current', {'packages':['corechart']});
-
-    // Set a callback to run when the Google Visualization API is loaded.
-    google.charts.setOnLoadCallback(drawChart);
-
-    // Callback that creates and populates a data table,
-    // instantiates the pie chart, passes in the data and
-    // draws it.
-    function drawChart() {
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Topping');
-        data.addColumn('number', 'percentage');
-        let categories = <?php echo json_encode($categories); ?>;
-        data.addRows(categories);
-
-        if(window.matchMedia("(min-width: 1200px)").matches){
-            var options = {'title':'Categories','width':1200,'height':600};
-        }else if(window.matchMedia("(min-width: 1000px)").matches){
-            var options = {'title':'Categories','width':1000,'height':600};
-        } else if (window.matchMedia("(min-width: 800px)").matches) {
-            var options = {'title':'Categories','width':800,'height':600};
-        } else if(window.matchMedia("(min-width: 500px)").matches) {
-            var options = {'title':'Categories','width':500,'height':600};
-        }else{
-            var options = {'title':'Categories','width':300,'height':600};
-        }
-        
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-    }
-        
-    $(window).resize(()=>{
-        drawChart();
-    })
-    </script>
-@endsection
-

@@ -129,12 +129,6 @@
                         <span>{{ __('messages.job_notification.job_notifications') }}</span>
                     </a>
                 </li>
-                <li class="side-menus {{ Request::is('admin/job-expired*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('admin.jobs.expiredJobs') }}">
-                        <i class="fas fa-calendar-times"></i>
-                        <span>{{ __('messages.expired_jobs') }}</span>
-                    </a>
-                </li>
             </ul>
         </li>
         <li class="nav-item side-menus dropdown">
@@ -152,12 +146,6 @@
                     <a class="nav-link" href="{{ route('posts.index') }}">
                         <i class="fas fa-blog"></i>
                         <span> {{ __('messages.post.posts') }}</span>
-                    </a>
-                </li>
-                <li class="side-menus {{ Request::is('admin/post-comments*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('post.comments') }}">
-                        <i class="fas fa-comments"></i>
-                        <span> {{ __('messages.post_comments') }}</span>
                     </a>
                 </li>
             </ul>
@@ -178,7 +166,7 @@
                 <li class="side-menus {{ Request::is('admin/quizzes/quiz*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('quiz.index') }}">
                         <i class="fas fa-file-alt"></i>
-                        <span>{{ __('messages.quizzes.quizzes') }}</span>
+                        <span>{{ __('messages.quizzes.quizzes_title') }}</span>
                     </a>
                 </li>
             </ul>
@@ -382,25 +370,6 @@
                     <a class="nav-link" href="{{ route('settings.index') }}">
                         <i class="fas fa-sliders-h"></i>
                         <span>{{ __('messages.settings') }}</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item dropdown side-menus">
-            <a class="nav-link has-dropdown" href="#"><i class="fas fa-users-cog"></i>
-                <span>{{ __('Front CMS') }}</span>
-            </a>
-            <ul class="dropdown-menu side-menus">
-                <li class="side-menus {{ Request::is('admin/cms-services*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('cms.services.index') }}">
-                        <i class="fas fa-sticky-note"></i>
-                        <span>{{ __('messages.cms_services') }}</span>
-                    </a>
-                </li>
-                <li class="side-menus {{ Request::is('admin/cms.about-us.service*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('cms.about-us.service') }}">
-                        <i class="fas fa-sticky-note"></i>
-                        <span>{{ __('About Us Services') }}</span>
                     </a>
                 </li>
             </ul>

@@ -348,7 +348,10 @@ class QuizTakeAnswersController extends Controller
                     'take_number'   => $take_number
                 ]);
             }
-
+            $quiz = Quiz::find($quiz_id);
+            $quiz->number_of_takes += 1;
+            $quiz->save();
+            
             if(is_null($guest)){
                 $this->quiz_grades($quiz_id, auth()->id(), $take_number);
                 QuizUser::where('quiz_id', $quiz_id)

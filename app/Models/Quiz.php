@@ -17,7 +17,8 @@ class Quiz extends Model
         'name',
         'description',
         'enable_guests',
-        'horizontal_display'
+        'horizontal_display',
+        'number_of_takes'
     ];
 
     public static function boot() {

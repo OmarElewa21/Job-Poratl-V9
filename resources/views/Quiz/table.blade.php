@@ -10,7 +10,8 @@
                     <i class="fas fa-user-plus text-success details mr-2"></i>
                 </a>
                 <a class="pr-4 m-auto" href="{{route('loadQuizGrades', ['quiz_id' => $quiz->id])}}" title="View Quiz Takers">
-                    <i class="fas fa-users fa-lg" data-count={{count($quiz->quiz_candidate_takers) + count($quiz->quiz_guests_takers)}}></i> 
+                    <i class="fas fa-users fa-lg" data-count={{$quiz->number_of_takes}}></i>
+                    {{-- <i class="fas fa-users fa-lg" data-count={{count($quiz->quiz_candidate_takers) + count($quiz->quiz_guests_takers)}}></i>  --}}
                 </a>
                 <a class="pl-1 pr-1 m-auto" href="#" title="Edit" onclick="quizzes.edit({{$quiz->id}})">
                     <i class="fas fa-edit details"></i>

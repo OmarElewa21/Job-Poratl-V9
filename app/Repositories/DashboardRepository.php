@@ -13,6 +13,7 @@ use App\Models\Transaction;
 use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use App\Models\Quiz;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -32,17 +33,18 @@ class DashboardRepository
     public function getDashboardAssociatedData()
     {
         $data['totalUsers'] = User::count();
-        $data['totalCandidates'] = User::whereOwnerType(Candidate::class)->whereIsActive(User::ACTIVE)->count();
-        $data['totalEmployers'] = User::whereOwnerType(Company::class)->whereIsActive(User::ACTIVE)->count();
-        $data['totalActiveJobs'] = Job::whereDate('job_expiry_date', '>=', Carbon::now())->whereStatus(Job::STATUS_OPEN)->where('is_suspended', Job::NOT_SUSPENDED)->count();
+        $data['totalCandidates'] = User::whereOwnerType(Candidate::class)->count();
+        $data['totalEmployers'] = User::whereOwnerType(Company::class)->count();
+        $data['totalActiveJobs'] = Job::whereStatus(1)->without(['country', 'state', 'city'])->count();
         $data['totalVerifiedUsers'] = User::whereNotNull('is_verified')->count();
-        $data['todayJobs'] = Job::whereDate('created_at',
+        $data['todayJobs'] = Job::without(['country', 'state', 'city'])->whereDate('created_at',
             Carbon::today())->count();
-        $data['featuredJobs'] = Job::has('activeFeatured')->where('job_expiry_date', '>=', Carbon::now())->count();
+        $data['featuredJobs'] = Job::without(['country', 'state', 'city'])->has('activeFeatured')->count();
         $data['featuredEmployers'] = Company::has('activeFeatured')->count();
         $data['featuredJobsIncomes'] = Transaction::whereOwnerType(Job::class)->sum('amount');
         $data['featuredCompanysIncomes'] = Transaction::whereOwnerType(Company::class)->sum('amount');
         $data['subscriptionIncomes'] = Transaction::whereOwnerType(Subscription::class)->sum('amount');
+        $data['quizzesTakes'] = Quiz::sum('number_of_takes');
 
         return $data;
     }
@@ -152,8 +154,7 @@ class DashboardRepository
         $data['totalJobs'] = count($jobIds);
         $data['pausedJobCount'] = Job::whereCompanyId($user->owner_id)->where('status', Job::STATUS_PAUSED)->count();
         $data['closedJobCount'] = Job::whereCompanyId($user->owner_id)->where('status', Job::STATUS_CLOSED)->count();
-        $data['jobCount'] = Job::whereCompanyId($user->owner_id)->where('status',
-            Job::STATUS_OPEN)->whereDate('job_expiry_date', '>=', Carbon::now()->toDateString())->count();
+        $data['jobCount'] = Job::whereCompanyId($user->owner_id)->where('status', Job::STATUS_OPEN)->count();
         $data['followersCount'] = FavouriteCompany::whereCompanyId($user->owner_id)->count();
 
         return $data;

@@ -204,6 +204,7 @@ return [
         'subscription_incomes'       => 'Subscription Incomes',
         'weekly_users'               => 'Weekly users',
         'post_statistics'            => 'Posts Statistics',
+        'quizzes_takes'              => 'Quizzes Takes Number'
     ],
 
     //Job Category

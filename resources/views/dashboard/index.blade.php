@@ -133,6 +133,21 @@
                     </div>
                 </div>
             </div>
+            <a class="col-lg-3 col-md-6 col-sm-12 col-12" href="{{route('quiz.index')}}">
+                <div class="card card-statistic-1">
+                    <div class="card-icon verified-users-bg">
+                        <i class="fas fa-file-invoice"></i>
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4>{{ __('messages.admin_dashboard.quizzes_takes') }}</h4>
+                        </div>
+                        <div class="card-body mt-0">
+                            {{ number_format($data['dashboardData']['quizzesTakes']) }}
+                        </div>
+                    </div>
+                </div>
+            </a>
         </div>
         <!-- statistics count ends -->
         <div class="row">
@@ -209,7 +224,7 @@
                                             <i class="{{ ($registeredCandidates->immediate_available) ? 'fas fa-check-circle text-success' : 'fas fa-times-circle text-danger' }}"></i>
                                         </td>
                                         <td class="text-center">
-                                            <i class="{{ ($registeredCandidates->user->is_verified) && ($registeredCandidates->user->email_verified_at) ? 'fas fa-check-circle text-success' : 'fas fa-times-circle text-danger' }}"></i>
+                                            <i class="{{ ($registeredCandidates->user->is_verified) ? 'fas fa-check-circle text-success' : 'fas fa-times-circle text-danger' }}"></i>
                                         </td>
                                     </tr>
                                 @empty

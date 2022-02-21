@@ -148,4 +148,22 @@
         {{ Form::label('updated_at', __('messages.common.last_updated').':') }}
         <p>{{ $candidate->updated_at->diffForHumans() }}</p>
     </div>
+
+    <div class="form-group col-sm-3">
+        {{ Form::label('quizzes', __('messages.admin_dashboard.quizzes_takes').':') }}
+        @if (count($candidate->user->quizUser) > 0)
+            <p>
+                @php
+                    $count = 0;
+                    foreach ($candidate->user->quizUser as $quizUser){
+                        $count += $quizUser->take_number + 1;
+                    }    
+                    echo $count;
+                @endphp
+            </p>
+        @else
+            <p>N/A</p>
+        @endif
+        
+    </div>
 </div>

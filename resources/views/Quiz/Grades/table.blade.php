@@ -13,9 +13,17 @@
         @forelse ($quiz->quiz_candidate_grades as $candidate_grade)
             <tr>
                 <td scope="col">
-                    <a href="#" onclick="showUser({{$candidate_grade->user->id}})">
-                        {{$candidate_grade->user->first_name . ' ' . $candidate_grade->user->last_name}}
-                    </a>
+                    @if (!is_null($candidate_grade->user->candidate))
+                        <a href="{{route('candidates.show', ['candidate' => $candidate_grade->user->candidate->id])}}">
+                            {{$candidate_grade->user->first_name . ' ' . $candidate_grade->user->last_name}}
+                        </a>
+                    @else
+                        <a href="#" onclick="showUser({{$candidate_grade->user->id}})">
+                            {{$candidate_grade->user->first_name . ' ' . $candidate_grade->user->last_name}}
+                        </a>
+                    @endif
+                    
+                    
                 </td>
                 <td scope="col" class="d-none"> {{$candidate_grade->user->email}} </td>
                 <td scope="col"> <i class="fas fa-check-circle text-primary grade-fas"></i> </td>

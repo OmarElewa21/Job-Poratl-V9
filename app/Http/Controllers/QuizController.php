@@ -319,7 +319,7 @@ class QuizController extends AppBaseController
 
 
     public function quiz_takers($quiz_id){
-        $quiz = Quiz::where('id', $quiz_id)->with('quiz_candidate_grades', 'quiz_guests_grades')->first();
+        $quiz = Quiz::where('id', $quiz_id)->with('quiz_candidate_grades', 'quiz_candidate_grades.user', 'quiz_guests_grades', 'quiz_guests_grades.guest')->first();
         return view('Quiz.Grades.index', compact('quiz'));
     }
 

@@ -23,7 +23,11 @@
                     </div>
                     @foreach ($candidates as $candidate)
                         <tr>
-                            <td> {{$candidate->first_name}} {{$candidate->last_name}} </td>
+                            <td>
+                                <a href="{{route('candidates.show', ['candidate' => $candidate->candidate->id])}}">
+                                    {{$candidate->first_name}} {{$candidate->last_name}}
+                                </a>
+                            </td>
                             <td> {{$candidate->email}} </td>
                             <td> {{count($candidate->quizUser)}} </td>
                             <td>

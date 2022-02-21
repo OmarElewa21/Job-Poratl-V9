@@ -265,7 +265,7 @@ class QuizController extends AppBaseController
      */
     public function assign_quiz_render($quiz_id){
         try{
-            $candidates = User::whereHas('candidate')->with('quizUser')->get();
+            $candidates = User::whereHas('candidate')->with('quizUser', 'candidate')->get();
             return View::make('Quiz.load_candidates', compact('candidates', 'quiz_id'));
         }catch (Exception $e){
             return response($e->getMessage(), 500);

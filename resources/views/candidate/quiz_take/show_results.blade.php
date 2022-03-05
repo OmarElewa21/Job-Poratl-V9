@@ -1,6 +1,6 @@
 @extends('web.layouts.app')
 @section('title')
-    {{ __('quizzes.take') }}
+    {{ __('messages.quizzes.quizzes_results') }}
 @endsection
 
 @section('css')
@@ -8,18 +8,17 @@
 @endsection
 
 @section('content')
-    <div class="ptb40 custom-pt-40 bg-info">
+    <div class="pb-5 pt-4 bg-info">
         <div class="section-title custom-pb-30">
             <h2 class="text-center h2-title">{{ __('messages.quizzes.quizzes_results') }}</h2>
         </div>
         <div class="user text-uppercase change-font-family">
-            <i class="fa fa-user" aria-hidden="true"></i>
-            <span>RESULTS FOR</span>
+            <i class="fa fa-user text-white" aria-hidden="true"></i>
             <span class="font-weight-bold"> {{$name}} </span>
         </div>
         <div class="calender text-uppercase">
-            <i class="fa fa-calendar" aria-hidden="true"></i>
-            <span class="change-font-family">
+            <i class="fa fa-calendar text-white" aria-hidden="true"></i>
+            <span class="change-font-family font-weight-bold">
                 @php
                     $categories = [];
                     foreach ($quiz_grades as $grade){

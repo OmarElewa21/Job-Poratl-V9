@@ -15,7 +15,7 @@ class CreateSkillCategoryClassesTable extends Migration
     {
         Schema::create('skill_category_classes', function (Blueprint $table) {
             $table->integer('skill_id');
-            $table->foreignId('class_id')->constrained('category_classes')->onDelete('cascade');
+            $table->text('class_name');
             $table->float('min_score_percentage');
             $table->float('max_score_percentage');
             $table->float('class_weight_from_skill');

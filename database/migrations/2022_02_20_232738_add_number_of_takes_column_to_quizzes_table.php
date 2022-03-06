@@ -26,7 +26,7 @@ class AddNumberOfTakesColumnToQuizzesTable extends Migration
     public function down()
     {
         Schema::table('quizzes', function (Blueprint $table) {
-            $table->dropColumnIfExists('number_of_takes');
+            $table->dropColumn('number_of_takes');
         });
     }
 }

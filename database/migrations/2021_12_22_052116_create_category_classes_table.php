@@ -18,6 +18,7 @@ class CreateCategoryClassesTable extends Migration
             $table->foreignId('category_id')->constrained('quiz_categories')->onDelete('cascade');
             $table->text('name');
             $table->boolean('is_negative')->default(true);
+            $table->softDeletes($column = 'deleted_at', $precision = 0);
             $table->timestamps();
         });
     }

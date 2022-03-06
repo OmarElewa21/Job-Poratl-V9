@@ -405,13 +405,11 @@ class QuizController extends AppBaseController
             $quiz_with_default_skills = Quiz::where('id', $quiz_id)->with('defaultSkills', 'defaultSkills.classes', 'defaultSkills.classes.category')->first();
             $skills__ = $quiz_with_default_skills->defaultSkills;
         }
-        
         if($request->is_guest){
             $user_classes = QuizClassGrade::where('quiz_id', $quiz_id)->where('guest_id', $request->user_id)->where('take_number', $request->take_number)->get();
         }else{
             $user_classes = QuizClassGrade::where('quiz_id', $quiz_id)->where('user_id', $request->user_id)->where('take_number', $request->take_number)->get();
         }
-
         foreach($skills__ as $default_skill){
             $dict = [];
             $dict['skill'] = $default_skill;
@@ -420,7 +418,7 @@ class QuizController extends AppBaseController
                 $class = $default_skill->classes[$index];
                 $found = false;
                 foreach($user_classes as $user_class){
-                    if($class->id == $user_class->class_id){
+                    if($class->name == $user_class->class_name){
                         $dict['classes'][$index]['skillClass'] = $class;
                         $dict['classes'][$index]['userClass'] = $user_class;
                         $found = true;
@@ -432,7 +430,7 @@ class QuizController extends AppBaseController
                         $class = $default_skill->classes[$index+1];
                         $found2 = false;
                         foreach($user_classes as $user_class){
-                            if($class->id == $user_class->class_id){
+                            if($class->name == $user_class->class_name){
                                 $dict['classes'][$index]['skillClass'] = $class;
                                 $dict['classes'][$index]['userClass'] = $user_class;
                                 $found2 = true;

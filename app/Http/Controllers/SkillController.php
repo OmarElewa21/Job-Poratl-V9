@@ -140,9 +140,10 @@ class SkillController extends AppBaseController
         try{
             Skill::find($skill_id)->SkillCategoryClasses()->delete();
             foreach($request->classes as $index=>$class_id){
+                $class = CategoryClass::find($class_id);
                 SkillCategoryClass::create([
                     'skill_id'                 => $skill_id,
-                    'class_id'                 => $class_id,
+                    'class_name'               => $class->name,
                     'min_score_percentage'     => $request->min_score_percentage[$index],
                     'max_score_percentage'     => $request->max_score_percentage[$index],
                     'class_weight_from_skill'  => $request->class_weight_from_skill[$index]

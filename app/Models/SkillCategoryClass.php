@@ -13,7 +13,7 @@ class SkillCategoryClass extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'class_id',
+        'class_name',
         'skill_id',
         'min_score_percentage',
         'max_score_percentage',
@@ -21,7 +21,7 @@ class SkillCategoryClass extends Model
     ];
 
     public function classes(){
-        return $this->hasMany(CategoryClass::class, 'class_id');
+        return $this->hasMany(CategoryClass::class, 'class_name', 'name');
     }
 
     public function skill(){

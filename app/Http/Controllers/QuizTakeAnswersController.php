@@ -115,7 +115,7 @@ class QuizTakeAnswersController extends Controller
                         }
                         QuizClassGrade::create([
                             'quiz_id'           => $Item->quiz_id,
-                            'class_id'          => $class->id,
+                            'class_name'          => $class->name,
                             'guest_id'          => $Item->guest_id,
                             'user_id'           => $Item->user_id,
                             'take_number'       => $Item->take_number,
@@ -210,7 +210,7 @@ class QuizTakeAnswersController extends Controller
             $max_score = abs($range->range_max_val) < abs($range->range_min_val) ?  $range->range_min_val : $range->range_max_val;
             QuizClassGrade::create([
                 'quiz_id'           => $quiz_id,
-                'class_id'          => $class->id,
+                'class_name'          => $class->name,
                 'user_id'           => $is_guest ? null : $user_id,
                 'guest_id'          => $is_guest ? $user_id: null,
                 'take_number'       => $take_number,

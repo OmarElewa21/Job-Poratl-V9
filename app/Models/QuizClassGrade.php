@@ -14,7 +14,7 @@ class QuizClassGrade extends Model
 
     protected $fillable = [
         'quiz_id',
-        'class_id',
+        'class_name',
         'user_id',
         'guest_id',
         'take_number',

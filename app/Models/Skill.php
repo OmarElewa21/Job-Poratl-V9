@@ -77,7 +77,7 @@ class Skill extends Model
     {
         return $this->belongsToMany(
             CategoryClass::class, SkillCategoryClass::class,
-            'skill_id', 'class_id')->withPivot('min_score_percentage', 'max_score_percentage', 'class_weight_from_skill')->orderBy('category_classes.category_id');
+            'skill_id', 'class_name', 'id', 'name')->withPivot('min_score_percentage', 'max_score_percentage', 'class_weight_from_skill')->orderBy('category_classes.category_id');
     }
 
     public function candidate_skills(){

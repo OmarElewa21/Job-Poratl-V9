@@ -15,7 +15,7 @@ class CreateQuizClassGradesTable extends Migration
     {
         Schema::create('quiz_class_grades', function (Blueprint $table) {
             $table->bigInteger('quiz_id');
-            $table->bigInteger('class_id');
+            $table->text('class_name');
             $table->bigInteger('user_id')->nullable();
             $table->bigInteger('guest_id')->nullable();
             $table->integer('take_number')->default(0);

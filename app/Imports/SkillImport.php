@@ -72,7 +72,7 @@ class SkillImport implements ToCollection, WithMultipleSheets, WithHeadingRow, W
 
                                 SkillCategoryClass::create([
                                     'skill_id'                => $skill->id,
-                                    'class_id'                => $class->id,
+                                    'class_name'                => $class->name,
                                     'min_score_percentage'    => $row['min_score_percentage'],
                                     'max_score_percentage'    => $row['max_score_percentage'],
                                     'class_weight_from_skill' => $weight
@@ -150,7 +150,7 @@ class SkillImport implements ToCollection, WithMultipleSheets, WithHeadingRow, W
                                 }
                                 SkillCategoryClass::create([
                                     'skill_id'                => $skill->id,
-                                    'class_id'                => $class->id,
+                                    'class_name'                => $class->name,
                                     'min_score_percentage'    => $row['min_score_percentage'],
                                     'max_score_percentage'    => $row['max_score_percentage'],
                                     'class_weight_from_skill' => $weight

@@ -133,6 +133,23 @@
                     </div>
                 </div>
             </div>
+
+            <a class="col-lg-3 col-md-6 col-sm-12 col-12" href="{{route('quiz.index')}}">
+                <div class="card card-statistic-1">
+                    <div class="card-icon verified-users-bg">
+                        <i class="fas fa-file-invoice"></i>
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4>{{ __('messages.admin_dashboard.quizzes_number') }}</h4>
+                        </div>
+                        <div class="card-body mt-0">
+                            {{ number_format($data['dashboardData']['quizzesNumber']) }}
+                        </div>
+                    </div>
+                </div>
+            </a>
+
             <a class="col-lg-3 col-md-6 col-sm-12 col-12" href="{{route('quiz.index')}}">
                 <div class="card card-statistic-1">
                     <div class="card-icon verified-users-bg">
@@ -148,6 +165,7 @@
                     </div>
                 </div>
             </a>
+
         </div>
         <!-- statistics count ends -->
         <div class="row">

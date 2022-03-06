@@ -44,7 +44,8 @@ class DashboardRepository
         $data['featuredJobsIncomes'] = Transaction::whereOwnerType(Job::class)->sum('amount');
         $data['featuredCompanysIncomes'] = Transaction::whereOwnerType(Company::class)->sum('amount');
         $data['subscriptionIncomes'] = Transaction::whereOwnerType(Subscription::class)->sum('amount');
-        $data['quizzesTakes'] = Quiz::sum('number_of_takes');
+        $data['quizzesTakes']  = Quiz::sum('number_of_takes');
+        $data['quizzesNumber'] = Quiz::count();
 
         return $data;
     }
